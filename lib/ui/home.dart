@@ -47,6 +47,22 @@ class _HomeState extends State<Home> {
         create: (_) => speciesBloc..add(LoadSpecies()),
         child: BlocBuilder<SpeciesBloc, SpeciesState>(
           builder: (context, state) {
+            if (state is SpeciesFailed) {
+              return Center(
+                child: Column(mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('Failed to load species.'),
+                    TextButton(
+                      onPressed: () => speciesBloc..add(LoadSpecies()),
+                      child: const Text(
+                        'Retry',
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
             if (state is SpeciesSuccess) {
               list = state.listSpecies;
               hasReachMax = state.hasReachedMax;
@@ -73,7 +89,6 @@ class _HomeState extends State<Home> {
                       ),
                       tileColor: Colors.white,
                       leading: CircleAvatar(
-                        
                         backgroundColor: Colors.white,
                         backgroundImage: AssetImage(
                             'assets/species/${list[index].name}.webp'),
@@ -100,7 +115,7 @@ class _HomeState extends State<Home> {
     }
 
     return Scaffold(
-      body: listSpecies(),
+      body: SafeArea(child: listSpecies()),
     );
   }
 }
