@@ -32,6 +32,7 @@ class SpeciesBloc extends Bloc<SpeciesEvent, SpeciesState> {
           page--;
         }
       } catch (e) {
+        page--;
         emit(SpeciesFailed(e.toString()));
       }
     });
